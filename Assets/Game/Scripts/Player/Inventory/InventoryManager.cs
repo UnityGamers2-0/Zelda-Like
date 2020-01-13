@@ -1,14 +1,25 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] Inventory inventory;
     [SerializeField] EquipmentPanel equipmentPanel;
-    [SerializeField] Inventory chestInv;
-    [SerializeField] Inventory actualChest;
+    [SerializeField] GameObject Tooltip;
+    Inventory chestInv;
+    Inventory actualChest;
+    [Space]
+    [SerializeField] Text itemName;
+    [SerializeField] Text attack;
+    [SerializeField] Text agility;
+    [SerializeField] Text defense;
 
     private void Awake()
     {
+        inventory.OnEnter += SetTooltip;
+        equipmentPanel.OnEnter += SetTooltip;
+        inventory.OnExit += HideTooltip;
+        equipmentPanel.OnExit += HideTooltip;
         inventory.OnItemRightClickedEvent += EquipFromInventory;
         equipmentPanel.OnItemRightClickedEvent += UnequipFromEquipPanel;
     }
@@ -18,8 +29,10 @@ public class InventoryManager : MonoBehaviour
         chestInv = visual;
         actualChest = actual;
         chestInv.OnItemRightClickedEvent += MoveFrom;
-        chestInv.AddAction();
-        Debug.Log("from set");
+        chestInv.OnEnter += SetTooltip;
+        chestInv.OnExit += HideTooltip;
+        chestInv.AddActions();
+        chestInv.RefreshUI();
     }
 
     private void EquipFromInventory(Item item)
@@ -77,7 +90,6 @@ public class InventoryManager : MonoBehaviour
 
     private void MoveFrom(Item item)
     {
-        Debug.Log("From registered");
         if (!inventory.IsFull() && RemoveFromChest(item))
         {
             inventory.AddItem(item);
@@ -100,5 +112,29 @@ public class InventoryManager : MonoBehaviour
         {
             inventory.AddItem(item);
         }
+    }
+
+    private void SetTooltip(Item item)
+    {
+        Tooltip.SetActive(true);
+        itemName.text = item.ItemName;
+        if (item is EquippableItem)
+        {
+            EquippableItem eI = (EquippableItem)item;
+            attack.text = eI.AttackBonus.ToString();
+            agility.text = eI.AgillityBonus.ToString();
+            defense.text = eI.DefenseBonus.ToString();
+        }
+        else
+        {
+            attack.text = "None";
+            agility.text = "None";
+            defense.text = "None";
+        }
+    }
+
+    public void HideTooltip(Item item)
+    {
+        Tooltip.SetActive(false);
     }
 }

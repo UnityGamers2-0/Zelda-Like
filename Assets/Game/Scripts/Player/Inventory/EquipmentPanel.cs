@@ -7,12 +7,16 @@ public class EquipmentPanel : MonoBehaviour
     [SerializeField] EquipmentSlot[] equipmentSlots;
 
     public event Action<Item> OnItemRightClickedEvent;
+    public event Action<Item> OnEnter;
+    public event Action<Item> OnExit;
 
     private void Awake()
     {
         for (int i = 0; i < equipmentSlots.Length; i++)
         {
             equipmentSlots[i].OnRightClickEvent += OnItemRightClickedEvent;
+            equipmentSlots[i].OnEnter += OnEnter;
+            equipmentSlots[i].OnExit += OnExit;
         }
     }
 

@@ -15,7 +15,7 @@ public class AnimationReceiver : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!player.drawing && bowPower.update)
+		if (!player.rClickHeld && bowPower.update)
 		{
 			bowPower.Reset();
 		}
@@ -50,5 +50,10 @@ public class AnimationReceiver : MonoBehaviour {
 	public void FootL()
 	{
 		player.FootStep();
+	}
+
+	public void Hit()
+	{
+		player.Attack();
 	}
 }

@@ -1,14 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
+    public enum Class
+    {
+        Mage,
+        Knight,
+        Archer
+    }
+
+    [Space]
     public GameObject[] characterList;
-    private int character;
+    public static Class pClass;
     public GameObject interact;
     public GameObject bowPower;
 
-    public Camera cam;
     private Rigidbody rb;
     private Transform t;
     private Animator a;
@@ -33,7 +40,7 @@ public class Player : MonoBehaviour
     bool sprint = false;
     bool crawl = false;
     bool isGrounded = true;
-    public bool drawing = false;
+    public bool rClickHeld = false;
 
     //Speeds
     const float baseSpeed = 50f;
@@ -47,6 +54,7 @@ public class Player : MonoBehaviour
     const float airSpeed = 3f;
     const float crawlSpeed = -6f;
     const float sprintSpeed = 6f;
+    const float rClickSpeed = -3.5f;
 
     //options
     int mouseSens = 100;
@@ -89,7 +97,10 @@ public class Player : MonoBehaviour
         Physics.gravity = new Vector3(0, -15, 0);
 
         //setup player
-        character = PlayerPrefs.GetInt("CharacterSelected");
+        pClass = (Class)PlayerPrefs.GetInt("CharacterSelected");
+        health = 20;
+        maxHealth = 20;
+        baseDamage = 1;
 
         //Fill array with the character models
         for (int i = 0; i < transform.childCount; i++)
@@ -98,11 +109,11 @@ public class Player : MonoBehaviour
             characterList[i].SetActive(false);
         }
 
-        if (characterList[character])
+        if (characterList[(int)pClass])
         {
-            characterList[character].SetActive(true);
-            t = characterList[character].transform;
-            a = characterList[character].GetComponent<Animator>();
+            characterList[(int)pClass].SetActive(true);
+            t = characterList[(int)pClass].transform;
+            a = characterList[(int)pClass].GetComponent<Animator>();
         }
     }
 
@@ -111,9 +122,16 @@ public class Player : MonoBehaviour
     {
         interInRange = InteractableInRange();
 
-        //inv
-        if (Input.GetKeyDown(KeyCode.E))
+        //(un)pause game
+        if (Input.GetKeyDown(KeyCode.Escape) && !inv.activeSelf)
         {
+            pm.Pause();
+        }
+
+        //inv
+        if (Input.GetKeyDown(KeyCode.E) || (Input.GetKeyDown(KeyCode.Escape) && inv.activeSelf))
+        {
+            manager.HideTooltip(null);
             //interaction
             if (interInRange)
             {
@@ -122,12 +140,16 @@ public class Player : MonoBehaviour
                     Destroy(interactInv);
                 }
                 interactActive = !interactActive;
-                Inventory actual = interactable.gameObject.GetComponentInChildren<Inventory>();
-                interactInv = Instantiate(actual.gameObject);
-                interactInv.transform.parent = inv.transform;
-                interactInv.transform.localPosition = new Vector3(0, 255, 0);
-                manager.FetchChestInv(interactInv.GetComponent<Inventory>(), actual);
+                if (interactActive)
+                {
+                    Inventory actual = interactable.gameObject.GetComponentInChildren<Inventory>();
+                    interactInv = Instantiate(actual.gameObject);
+                    interactInv.transform.SetParent(inv.transform);
+                    interactInv.transform.localPosition = new Vector3(0, 255, 0);
+                    interactInv.transform.localScale = new Vector3(1, 1, 1);
 
+                    manager.FetchChestInv(interactInv.GetComponent<Inventory>(), actual);
+                }
                 equipment.SetActive(!equipment.activeSelf);
                 interactInv.SetActive(interactActive);
             }
@@ -151,23 +173,7 @@ public class Player : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
-        //(un)pause game
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (inv.activeSelf)
-            {
-                inv.SetActive(false);
-                equipment.SetActive(true);
-                if (interactInv)
-                {
-                    interactInv.SetActive(false);
-                }
-            }
-            else
-            {
-                pm.Pause();
-            }
-        }
+        
 
         if (Time.timeScale != 0)
         {
@@ -212,16 +218,23 @@ public class Player : MonoBehaviour
                 {
                     a.SetTrigger("Attack2");
                 }
-                //if archer & right click pressed
-                if (Input.GetKey(KeyCode.Mouse1) && character == 2)
+                //if right click held
+                if (Input.GetKey(KeyCode.Mouse1))
                 {
-                    drawing = true;
+                    rClickHeld = true;
                 }
                 else
                 {
-                    drawing = false;
+                    rClickHeld = false;
                 }
-                a.SetBool("Drawing", drawing);
+                if (pClass == Class.Archer)
+                {
+                    a.SetBool("Drawing", rClickHeld);
+                }
+                else if (pClass == Class.Knight)
+                {
+                    a.SetBool("Blocking", rClickHeld);
+                }
 
                 //User directional input
                 a.SetBool("Moving", false);
@@ -313,6 +326,11 @@ public class Player : MonoBehaviour
                 currMaxSpeed += crawlSpeed;
                 currSpeed += crawlSpeed;
                 crawl = false;
+            }
+            if (rClickHeld)
+            {
+                currMaxSpeed += rClickSpeed;
+                currSpeed += rClickSpeed;
             }
 
             if (moveRight)

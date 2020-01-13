@@ -9,10 +9,12 @@ public class Inventory : MonoBehaviour
     [SerializeField] ItemSlot[] itemSlots;
 
     public event Action<Item> OnItemRightClickedEvent;
+    public event Action<Item> OnEnter;
+    public event Action<Item> OnExit;
 
     private void Awake()
     {
-        AddAction();
+        AddActions();
     }
 
     private void OnValidate()
@@ -25,7 +27,7 @@ public class Inventory : MonoBehaviour
         RefreshUI();
     }
 
-    private void RefreshUI()
+    public void RefreshUI()
     {
         int i = 0;
         for (; i < items.Count && i < itemSlots.Length; i++)
@@ -66,11 +68,13 @@ public class Inventory : MonoBehaviour
         return items.Count >= itemSlots.Length;
     }
 
-    public void AddAction()
+    public void AddActions()
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {
             itemSlots[i].OnRightClickEvent += OnItemRightClickedEvent;
+            itemSlots[i].OnEnter += OnEnter;
+            itemSlots[i].OnExit += OnExit;
         }
     }
 }

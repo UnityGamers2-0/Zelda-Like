@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemSlot : MonoBehaviour, IPointerClickHandler
+public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] Image image;
 
     public event Action<Item> OnRightClickEvent;
+    public event Action<Item> OnEnter;
+    public event Action<Item> OnExit;
 
     private Item _item;
     public Item item
@@ -32,11 +34,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         if (eventData != null && eventData.button == PointerEventData.InputButton.Right)
         {
-            Debug.Log(item + "; " + OnRightClickEvent);
             if (item != null && OnRightClickEvent != null)
             {
                 OnRightClickEvent(item);
-                Debug.Log(item + " clicked");
             }
         }
     }
@@ -46,6 +46,28 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (image == null)
         {
             image = GetComponent<Image>();
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (eventData != null)
+        {
+            if (item != null && OnEnter != null)
+            {
+                OnEnter(item);
+            }
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (eventData != null)
+        {
+            if (item != null && OnExit != null)
+            {
+                OnExit(item);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyMovement : MonoBehaviour {
 
 	[SerializeField]Transform target;
-	[SerializeField]float movementSpeed = 10f;
+	[SerializeField]float movementSpeed = 13f;
 	[SerializeField]float rotationalDamp = .5f;
 	[SerializeField]public float lookRadius = 10f;
 	[SerializeField]NavMeshAgent agent;
@@ -31,7 +31,6 @@ public class EnemyMovement : MonoBehaviour {
 		catch (UnassignedReferenceException) { }
 
 		Turn ();
-		//Move ();
 	}
 
 	void Turn()
@@ -44,11 +43,6 @@ public class EnemyMovement : MonoBehaviour {
 		}
 		catch (UnassignedReferenceException) { }
 	}
-
-	/*void Move()
-	{
-		transform.position += transform.forward * movementSpeed * Time.deltaTime;
-	}		*/
 
 	void FaceTarget()
 	{

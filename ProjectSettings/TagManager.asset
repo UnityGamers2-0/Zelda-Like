@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Floor
   - Interactable
+  - Entity
   layers:
   - Default
   - TransparentFX

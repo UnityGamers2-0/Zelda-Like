@@ -3,38 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour {
-
-	public float lookRadius = 10f;
+public class EnemyController : Entity {
+    
+	[Space]
+	public float lookRadius = 20f;
+    private Animator a;
 
 	[SerializeField]Transform target;
 	[SerializeField]NavMeshAgent agent;
 
-	// Use this for initialization
 	void Start () 
 	{
 		//GameObject.FindGameObjectsWithTag ("Mage", "Knight", "Archer");
 		target = PlayerManager.instance.player.transform;
 		agent = GetComponent<NavMeshAgent>();
+
+        a = GetComponent<Animator>();
 	}
-	
-	// Update is called once per frame
+
+	//Allows enemy to move towards player
 	void Update ()
 	{
 		float distance = Vector3.Distance (target.position, transform.position);
+        //Debug.Log(target.position - transform.position);
 
 		if (distance <= lookRadius) 
 		{
 			agent.SetDestination (target.position);
 
-			if (distance <= agent.stoppingDistance) 
+			if (distance <= agent.stoppingDistance + Mathf.Abs(target.position.y - transform.position.y)) 
 			{
 				//Attack and face the target
 				FaceTarget();
+                a.SetTrigger("Attack");
+				Attack(target);
 			}	
 		}	
 	}
 
+	//Rotates enemy (if necessary) to follow target
 	void FaceTarget()
 	{
 		Vector3 direction = (target.position - transform.position).normalized;
