@@ -37,6 +37,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             if (item != null && OnRightClickEvent != null)
             {
                 OnRightClickEvent(item);
+                OnExit(item);
             }
         }
     }

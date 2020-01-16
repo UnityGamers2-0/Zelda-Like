@@ -60,4 +60,9 @@ public class CharacterSelection : MonoBehaviour {
 		PlayerPrefs.SetInt ("CharacterSelected", index);
 		SceneManager.LoadScene ("3d test");
 	}
+
+	public void ExitButton()
+	{
+		Application.Quit();
+	}
 }

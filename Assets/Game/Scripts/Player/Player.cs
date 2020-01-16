@@ -24,7 +24,13 @@ public class Player : Entity
     public GameObject inv;
     public GameObject interactInv;
     public GameObject equipment;
-
+    [Space]
+    public AudioSource hit;
+    public AudioSource archerShoot;
+    public AudioSource knightSlash;
+    public AudioSource knightBlock;
+    public AudioSource miss;
+    [Space]
     public InventoryManager manager;
 
     //interactable in range
@@ -100,7 +106,8 @@ public class Player : Entity
         pClass = (Class)PlayerPrefs.GetInt("CharacterSelected");
         health = 20;
         maxHealth = 20;
-        baseDamage = 1;
+        baseAttack = 1;
+        attack = baseAttack;
 
         //Fill array with the character models
         for (int i = 0; i < transform.childCount; i++)
@@ -295,6 +302,12 @@ public class Player : Entity
             float y = crawl ? locPos.y + 0.8F : locPos.y + 1;
             cam.transform.position = t.TransformDirection(new Vector3(locPos.x, y, locPos.z + 0.4F));
         }
+
+        //kill the player if it falls out of the world
+        if (transform.position.y <= 0)
+        {
+            TakeDamage(float.MaxValue);
+        }
     }
 
     void FixedUpdate()
@@ -309,8 +322,8 @@ public class Player : Entity
             //local velocity so that velocity is changed based on facing direction
             Vector3 locVel = transform.InverseTransformDirection(rb.velocity);
 
-            float currMaxSpeed = baseMaxSpeed;
-            float currSpeed = baseSpeed;
+            float currMaxSpeed = baseMaxSpeed + (baseSpeed * (agility * 0.01f));
+            float currSpeed = baseSpeed + (baseSpeed * (agility * 0.01f));
             if (!isGrounded)
             {
                 currMaxSpeed += airSpeed;

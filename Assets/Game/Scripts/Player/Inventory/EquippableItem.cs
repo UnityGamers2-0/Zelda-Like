@@ -82,8 +82,8 @@ public class EquippableItem : Item
     public static EquippableItem GenRand()
     {
         Player.Class c = Player.pClass;
-
         EquippableItem item = CreateInstance<EquippableItem>();
+
         //Essentially gets a random item type
         EquipmentType type = (EquipmentType)Random.Range(0, 5);
         //"adjective", weight, modifier, image
@@ -112,61 +112,63 @@ public class EquippableItem : Item
         }
 
         string itemType = "";
-        if (type == EquipmentType.Weapon1)
+        switch (type)
         {
-            if (c == Player.Class.Archer)
-            {
-                itemType = "Bow";
-                item.Icon = bows[img / 2];
-            }
-            else if (c == Player.Class.Knight)
-            {
-                itemType = "Sword";
-                item.Icon = swords[img];
-            }
-            else if (c == Player.Class.Mage)
-            {
-                itemType = "Wand";
-                item.Icon = wands[img / 2];
-            }
-        }
-        else if (type == EquipmentType.Weapon2)
-        {
-            if (c == Player.Class.Archer)
-            {
-                itemType = "Gloves";
-                item.Icon = gloves[img / 2];
-            }
-            else if (c == Player.Class.Knight)
-            {
-                itemType = "Sheild";
-                item.Icon = sheilds[img];
-            }
-            else if (c == Player.Class.Mage)
-            {
-                itemType = "Wand";
-                item.Icon = wands[img / 2];
-            }
-        }
-        else
-        {
-            itemType = type.ToString();
-            if (type == EquipmentType.Helmet)
-            {
-                item.Icon = helms[img / 2];
-            }
-            else if (type == EquipmentType.Chestplate)
-            {
-                item.Icon = chests[img / 2];
-            }
-            else if (type == EquipmentType.Leggings)
-            {
-                item.Icon = legs[img / 2];
-            }
-            else if (type == EquipmentType.Boots)
-            {
-                item.Icon = boots[img / 2];
-            }
+            case EquipmentType.Weapon1:
+                switch (c)
+                {
+                    case Player.Class.Archer:
+                        itemType = "Bow";
+                        item.Icon = bows[img / 2];
+                        break;
+                    case Player.Class.Knight:
+                        itemType = "Sword";
+                        item.Icon = swords[img];
+                        break;
+                    case Player.Class.Mage:
+                        itemType = "Wand";
+                        item.Icon = wands[img / 2];
+                        break;
+                }
+
+                break;
+            case EquipmentType.Weapon2:
+                switch (c)
+                {
+                    case Player.Class.Archer:
+                        itemType = "Gloves";
+                        item.Icon = gloves[img / 2];
+                        break;
+                    case Player.Class.Knight:
+                        itemType = "Sheild";
+                        item.Icon = sheilds[img];
+                        break;
+                    case Player.Class.Mage:
+                        itemType = "Wand";
+                        item.Icon = wands[img / 2];
+                        break;
+                }
+
+                break;
+            default:
+                itemType = type.ToString();
+                switch (type)
+                {
+                    case EquipmentType.Helmet:
+                        item.Icon = helms[img / 2];
+                        break;
+                    case EquipmentType.Chestplate:
+                        item.Icon = chests[img / 2];
+                        break;
+                    case EquipmentType.Leggings:
+                        item.Icon = legs[img / 2];
+                        break;
+                    case EquipmentType.Boots:
+                        item.Icon = boots[img / 2];
+                        break;
+                }
+
+                break;
         }
 
         item.name = adj + " " + itemType;

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour {
+public class Projectile : MonoBehaviour
+{
 	public Player player;
 	Rigidbody rb;
 	Collider c;
@@ -55,15 +56,26 @@ public class Projectile : MonoBehaviour {
 		//Make arrow stick to what it hits
 		else if (anchor != null)
 		{
-			transform.position = anchor.transform.position;
-			transform.rotation = anchor.transform.rotation;
+            if (anchor.parent.gameObject.activeSelf)
+            {
+                transform.position = anchor.transform.position;
+                transform.rotation = anchor.transform.rotation;
+            }
+            else
+            {
+                flying = true;
+				rb = gameObject.AddComponent<Rigidbody>();
+				rb.angularDrag = 2f;
+				c.isTrigger = false;
+            }
 		}
 	}
 
 	void OnCollisionEnter(Collision collision)
 	{
-		if (flying)
+		if (flying && !collision.collider.name.Contains("Arrow"))
 		{
+            float speed = rb.velocity.magnitude;
 			flying = false;
 			rb.transform.position = collision.contacts[0].point;
 			c.isTrigger = true;
@@ -73,9 +85,9 @@ public class Projectile : MonoBehaviour {
 			anchor.transform.rotation = transform.rotation;
 			anchor.transform.parent = collision.transform;
 			this.anchor = anchor.transform;
-
+            object[] @params = new object[] { speed, player };
 			Destroy(rb);
-			collision.gameObject.SendMessage("arrowHit", SendMessageOptions.DontRequireReceiver);
+			collision.gameObject.SendMessage("arrowHit", @params, SendMessageOptions.DontRequireReceiver);
 		}
 	}
 }

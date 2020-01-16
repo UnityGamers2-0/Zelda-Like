@@ -35,6 +35,7 @@ public class AnimationReceiver : MonoBehaviour {
 	{
 		if (bowPower.canShoot)
 		{
+			player.archerShoot.Play();
 			bowPower.Reset();
 			Projectile newArrow = Instantiate(arrow);
 			newArrow.power = bowPower.power + Random.Range(0, 10);
@@ -54,6 +55,22 @@ public class AnimationReceiver : MonoBehaviour {
 
 	public void Hit()
 	{
-		player.Attack();
+		if(player.Attack())
+		{
+			switch (Player.pClass)
+			{
+				case (Player.Class.Archer):
+				case (Player.Class.Mage):
+					player.hit.Play();
+					break;
+				case (Player.Class.Knight):
+					player.knightSlash.Play();
+					break;
+			}
+		}
+		else
+		{
+			player.miss.Play();
+		}
 	}
 }

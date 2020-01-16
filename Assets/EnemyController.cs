@@ -11,6 +11,9 @@ public class EnemyController : Entity {
 
 	[SerializeField]Transform target;
 	[SerializeField]NavMeshAgent agent;
+	[Space]
+	[SerializeField] AudioSource hit;
+	[SerializeField] AudioSource miss;
 
 	void Start () 
 	{
@@ -36,7 +39,6 @@ public class EnemyController : Entity {
 				//Attack and face the target
 				FaceTarget();
                 a.SetTrigger("Attack");
-				Attack(target);
 			}	
 		}	
 	}
@@ -53,5 +55,18 @@ public class EnemyController : Entity {
 	{
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere (transform.position, lookRadius);
+	}
+
+	void TriggerAttack()
+	{
+		if(Attack(target))
+		{
+			hit.Play();
+		}
+		else
+		{
+			miss.Play();
+		}
+		
 	}
 }

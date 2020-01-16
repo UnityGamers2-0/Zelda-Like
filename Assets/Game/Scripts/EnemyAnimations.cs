@@ -33,7 +33,7 @@ public class EnemyAnimations : MonoBehaviour {
 			if (distance <= agent.stoppingDistance + Mathf.Abs(target.position.y - transform.position.y)) 
 			{
 				//Attack and face the target
-				a.SetTrigger("Attack01");
+				a.SetTrigger("Attack");
 			}	
 		}	
 	}
