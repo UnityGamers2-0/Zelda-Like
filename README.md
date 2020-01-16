@@ -4,7 +4,26 @@
  Our version of Legend of Zelda is an RPG created using Unity and Visual Studio. In it, you choose from one of three characters, and jump into the intense battle for survival as you try to collect the key that unlocks the castle Zelda has been captured in.
  <hr size = "1">
  <h3> Screenshots </h3>
+ Charging the bow.
  <img src="./Images/Screenshot (166).png">
+ Found the key
+ <img src="./Images/Screenshot (168).png">
+ Secret chest.
+ <img src="./Images/Screenshot (169).png">
+ Heading to the staircase.
+ <img src="./Images/Screenshot (170).png">
+ The staircase
+ <img src="./Images/Screenshot (171).png">
+ The entrance to the castle. Do you have the key?
+ <img src="./Images/Screenshot (172).png">
+ Falling out of the world will kill you! Be careful.
+ <img src="./Images/Screenshot (173).png">
+ Pause menu.
+ <img src="./Images/Screenshot (174).png">
+ Options menu.
+ <img src="./Images/Screenshot (166).png">
+ 
+ 
  
  
  <h3> Flow Chart </h3>
