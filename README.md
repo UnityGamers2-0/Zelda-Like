@@ -33,8 +33,8 @@
  <hr size = "1">
  
  <h3> Video </h3>
- [![Click for video](http://img.youtube.com/vi/fryWuiGTE58/0.jpg)](https://youtu.be/qbq_5r8zG2o "Zelda")
-<br/>Click image or: <a href="https://youtu.be/fryWuiGTE58">here</a>
+ [![Click for video](https://i.ytimg.com/vi/qbq_5r8zG2o/hqdefault.jpg)](https://youtu.be/qbq_5r8zG2o "Zelda")
+<br/>Click image or: <a href="https://youtu.be/qbq_5r8zG2o">here</a>
  
   <hr size = "1">
   
