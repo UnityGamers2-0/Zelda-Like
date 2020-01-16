@@ -5,4 +5,4 @@
  <hr size = "2">
  
  <h3> Flow Chart </h3>
- ![Flow Chart](https://github.com/UnityGamers2-0/Zelda-Like/blob/master/zeldaFlowChart1.PNG)
+ ![alt text](https://github.com/UnityGamers2-0/Zelda-Like/blob/master/zeldaFlowChart1.PNG)
