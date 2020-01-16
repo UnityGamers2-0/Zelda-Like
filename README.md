@@ -40,6 +40,9 @@
   <h3> Built With </h3>
   <li>This project was built entirely with Unity 2017.2.0f3 and Visual Studio  </li>
   
+  [![Click for video](http://img.youtube.com/vi/fryWuiGTE58/0.jpg)](https://youtu.be/qbq_5r8zG2o "Zelda")
+<br/>Click image or: <a href="https://youtu.be/fryWuiGTE58">here</a>
+  
    
   <hr size = "1">
   
